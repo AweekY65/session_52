@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<!--
+  3 自由度机械臂：1 个俯仰 revolute + 1 个 continuous 绕 z + 1 个竖直
+  prismatic，中间夹一个固定关节演示固定偏移的传播。
+-->
+<robot name="arm3dof">
+  <link name="base_link"/>
+
+  <joint name="joint_pitch" type="revolute">
+    <parent link="base_link"/>
+    <child link="link_pitch"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.2" upper="1.2" effort="10" velocity="2"/>
+  </joint>
+  <link name="link_pitch"/>
+
+  <!-- 固定关节：把后续结构沿 x 平移 0.3 m 并绕 z 偏转 90 度 -->
+  <joint name="fixed_offset" type="fixed">
+    <parent link="link_pitch"/>
+    <child link="link_bracket"/>
+    <origin xyz="0.3 0 0" rpy="0 0 1.5707963267948966"/>
+  </joint>
+  <link name="link_bracket"/>
+
+  <joint name="joint_yaw" type="continuous">
+    <parent link="link_bracket"/>
+    <child link="link_yaw"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" velocity="2"/>
+  </joint>
+  <link name="link_yaw"/>
+
+  <joint name="joint_lift" type="prismatic">
+    <parent link="link_yaw"/>
+    <child link="end_link"/>
+    <origin xyz="0.2 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-0.25" upper="0.25" effort="10" velocity="1"/>
+  </joint>
+  <link name="end_link"/>
+</robot>

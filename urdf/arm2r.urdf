@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<!--
+  平面 2R 机械臂（仅用于本地测试与示例）。
+  两个绕 z 轴转动的关节，link 长度均为 1 m，关节范围 +/- pi。
+  child link 框架位于其上游关节轴处（URDF 语义），末端再经一个
+  固定关节 j_ee 沿 x 偏移 1 m 到 end_effector。
+-->
+<robot name="arm2r">
+  <link name="base_link"/>
+
+  <joint name="joint_1" type="revolute">
+    <parent link="base_link"/>
+    <child link="link_1"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159265358979" upper="3.14159265358979"
+           effort="10" velocity="2"/>
+  </joint>
+
+  <link name="link_1"/>
+
+  <joint name="joint_2" type="revolute">
+    <parent link="link_1"/>
+    <child link="link_2"/>
+    <origin xyz="1 0 0" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="-3.14159265358979" upper="3.14159265358979"
+           effort="10" velocity="2"/>
+  </joint>
+
+  <link name="link_2"/>
+
+  <joint name="joint_ee" type="fixed">
+    <parent link="link_2"/>
+    <child link="end_effector"/>
+    <origin xyz="1 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="end_effector"/>
+</robot>
